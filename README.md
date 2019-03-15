@@ -1,5 +1,4 @@
 # Flok Template
-=========
 
 Flok template is a boilerplate for a quick start using Electron, Vue, Vuex, Vuetify, SQLite3 with Knex and Objection and tests using Jest
 
@@ -15,9 +14,10 @@ Follow the steps below:
 Build SQLite
 -------------
 
-After you install the dependencies, sqlite must be compiled to the target's platform, do to this, this project uses [electron-rebuild](https://github.com/electron/electron-rebuild)
+After you install the dependencies, sqlite must be compiled to the target's platform, using [electron-rebuild](https://github.com/electron/electron-rebuild)
 
-Run this command to rebuild sqlite (configured via package.json):
+Run this command to rebuild sqlite (configured via package.json)
+
 	npm run rebuild
 
 Initialize the database
