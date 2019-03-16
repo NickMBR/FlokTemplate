@@ -10,7 +10,7 @@
 
 		<v-toolbar-items>
 			<template v-for="menu in menus">
-				<v-menu v-if="menu.nested" :key="menu.title" offset-y :close-on-content-click="true" :nudge-width="150">
+				<v-menu v-if="menu.nested" :key="menu.title" offset-y :close-on-content-click="true" :nudge-width="150" left>
 					<v-btn :icon="menu.icon != null" flat slot="activator">
 						<span v-if="menu.icon == null" class="caption"><b>{{ menu.title }}</b></span>
 						<v-icon v-else>{{ menu.icon }}</v-icon>
@@ -24,7 +24,7 @@
 									<v-list-tile-action>
 										<v-icon size="24">{{ item.icon }}</v-icon>
 									</v-list-tile-action>
-									<v-list-tile-title>{{ item.title }}</v-list-tile-title>
+									<v-list-tile-title>{{ item.title && item.title.includes('.') ? $t(item.title) : item.title }}</v-list-tile-title>
 								</v-list-tile>
 							</template>
 						</v-list>
@@ -37,7 +37,8 @@
 
 <script>
 // DEPENDENCIES
-const { ipcRenderer } = require('electron')
+import Preferences from '@/services/api/preferences.js'
+import { ipcRenderer } from 'electron'
 
 export default {
 	name: 'app-toolbar',
@@ -45,27 +46,48 @@ export default {
 		return {
 			menus: [
 				{
+					title: 'Language',
+					nested: true,
+					icon: 'mdi-translate',
+					items: [
+						{
+							title: 'English',
+							icon: 'mdi-flag',
+							action: () => {
+								this.updateLocale('en')
+							}
+						},
+						{
+							title: 'Português',
+							icon: 'mdi-flag',
+							action: () => {
+								this.updateLocale('pt_BR')
+							}
+						}
+					]
+				},
+				{
 					title: 'Menu',
 					nested: true,
 					icon: 'mdi-settings',
 					items: [
 						{
-							title: 'Home',
+							title: 'menu.home',
 							icon: 'mdi-home',
 							action: () => {
 								this.$router.push('/home')
 							}
 						},
 						{
-							title: 'About',
+							title: 'menu.about',
 							icon: 'mdi-information-variant',
-							separator: true,
 							action: () => {
 								this.$router.push('/about')
 							}
 						},
 						{
-							title: 'Exit',
+							title: 'menu.exit',
+							separator: true,
 							icon: 'mdi-power',
 							action: () => {
 								this.terminate()
@@ -79,6 +101,13 @@ export default {
 	methods: {
 		terminate() {
 			ipcRenderer.send('exitall')
+		},
+		updateLocale(value) {
+			Preferences.updateSystemLanguage(value).then(() => {
+				this.$i18n.locale = value
+			}).catch(error => {
+				console.log('ERROR', error)
+			})
 		}
 	}
 }

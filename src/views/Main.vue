@@ -11,7 +11,6 @@
 </template>
 
 <script>
-// @ is an alias to /src
 import Toolbar from '@/components/navigation/Toolbar'
 
 export default {

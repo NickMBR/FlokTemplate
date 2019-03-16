@@ -11,5 +11,5 @@ exports.up = async (knex, Promise) => {
 }
 
 exports.down = async (knex, Promise) => {
-	return knex.schema.dropTable('coffee')
+	return knex.schema.dropTable('preferences')
 }

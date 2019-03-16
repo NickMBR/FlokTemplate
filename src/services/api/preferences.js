@@ -25,7 +25,34 @@ function updateSystemVersion(value) {
 	})
 }
 
+async function getSystemLanguage() {
+	return new Promise((resolve, reject) => {
+		Preferences.query().findById(1).then(result => {
+			if (result && result.language) {
+				resolve(result.language)
+			}
+			else {
+				resolve('en')
+			}
+		}).catch(error => {
+			reject(error)
+		})
+	})
+}
+
+function updateSystemLanguage(value) {
+	return new Promise((resolve, reject) => {
+		Preferences.query().patch({ language: value }).where('id', '=', 1).then(() => {
+			resolve()
+		}).catch(error => {
+			reject(error)
+		})
+	})
+}
+
 export default {
 	getSystemPreferences,
-	updateSystemVersion
+	updateSystemVersion,
+	getSystemLanguage,
+	updateSystemLanguage
 }

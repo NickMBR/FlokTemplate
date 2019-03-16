@@ -5,7 +5,9 @@ import store from './store'
 import Vuetify from 'vuetify'
 
 // PLUGINS
-import PTBR from './plugins/vuetify/locale/pt-br'
+import ptBR from './plugins/vuetify/locale/pt_BR'
+import VueI18n from 'vue-i18n'
+import Locales from './plugins/locale'
 
 // SERVICES
 import db from './services/db'
@@ -26,14 +28,23 @@ Vue.use(Vuetify, {
 		success: '#5E945A'
 	},
 	lang: {
-		locales: { PTBR },
-		current: 'PTBR'
+		locales: { ptBR },
+		current: 'ptBR'
 	},
 	iconfont: 'mdi'
+})
+
+// LOCALE
+Vue.use(VueI18n)
+const i18n = new VueI18n({
+	locale: 'en',
+	fallbackLocale: 'en',
+	messages: Locales
 })
 
 new Vue({
 	router,
 	store,
+	i18n,
 	render: h => h(App)
 }).$mount('#app')
